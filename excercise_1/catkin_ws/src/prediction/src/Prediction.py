@@ -53,6 +53,14 @@ def main():
         # register node
         rospy.init_node('prediction', anonymous=False)
 
+
+        #Publish on
+        #//camera/input/specific/number #CameraPseudo is subscriber
+        rospy.Publisher("/camera/input/specific/number ", Int32,queue_size=1)
+
+        #Verify on
+        #/camera/output/specific/check
+
         # init CameraPseudo
         pred = Prediction()
         #camera = CameraPseudo()

@@ -44,8 +44,7 @@ class CameraPseudo:
                                                         Bool,
                                                         queue_size=1)
 
-        # subscriber specific
-        #Publisher is Prediction --> Here the predicted numbers
+        # subscriber specific number --> here prediction
         rospy.Subscriber('/camera/input/specific/number',
                          Int32,
                          self.camera_specific_callback)
@@ -136,17 +135,21 @@ class CameraPseudo:
 
 def main():
     verbose = 1  # use 1 for debug
+    """[INFO] [1541604798.359488]: Publishing data...
+    [INFO] [1541604798.361513]: Begin publish_specific....
+    [INFO] [1541604798.363646]: 1
+    [INFO] [1541604798.365042]: jpg
+    [INFO] [1541604798.366487]: End publish_specific
+    [INFO] [1541604798.368197]: Begin publish_random....
+    [INFO] [1541604798.369477]: 0
+    [INFO] [1541604798.373983]: jpg
+    [INFO] [1541604798.375834]: Label: 1
+    [INFO] [1541604798.377541]: End publish_random.
+    [INFO] [1541604799.362856]: Begin publish_specific....
+    [INFO] [1541604799.367793]: 2
+    [INFO] [1541604799.372904]: jpg
+    [INFO] [1541604799.382484]: End publish_specific
     """
-    [INFO] [1541601125.727807]: Publishing data...
-    [INFO] [1541601125.729270]: 0
-    [INFO] [1541601125.730263]: jpg
-    [INFO] [1541601125.731307]: 0
-    [INFO] [1541601125.732260]: jpg
-    [INFO] [1541601125.733138]: 9
-    [INFO] [1541601126.063639]: 0
-    [INFO] [1541601126.068130]: jpg
-    """
-
     try:
         # register node
         rospy.init_node('camera_pseudo', anonymous=False)
