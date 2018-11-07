@@ -1,0 +1,8 @@
+prefix=/home/ros18/KI/ros_robotics/excercise_1/catkin_ws/devel
+
+Name: camera_pseudo
+Description: Description of camera_pseudo
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/ros18/KI/ros_robotics/excercise_1/catkin_ws/devel/lib 
+Requires: rospy roscpp sensor_msgs numpy cv_bridge

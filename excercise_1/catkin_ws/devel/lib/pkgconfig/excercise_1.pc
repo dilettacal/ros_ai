@@ -1,0 +1,8 @@
+prefix=/home/ros18/KI/ros_robotics/excercise_1/catkin_ws/devel
+
+Name: excercise_1
+Description: Description of excercise_1
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/ros18/KI/ros_robotics/excercise_1/catkin_ws/devel/lib 
+Requires: roscpp rospy

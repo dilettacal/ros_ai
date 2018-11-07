@@ -1,0 +1,2 @@
+camera_pseudo:excercise_1:prediction
+-DCATKIN_DEVEL_PREFIX=/home/ros18/KI/ros_robotics/excercise_1/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ros18/KI/ros_robotics/excercise_1/catkin_ws/install -G Unix Makefiles
