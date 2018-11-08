@@ -19,7 +19,7 @@ For the mnist example data, no buffer manual adaption is required.
 ## Excercise  
 Required part to pass course.
 ### 1)
-* Make yourself familiar with all the existing code. But especially with `catkin_ws/src/camera_pseudo/src/CameraPseudo.py` and `ai_train/mnist_cnn_modified.py`
+* Make yourself familiar with all the existing code. But especially with `catkin_ws/src/camera_pseudo/src/CameraPseudo.py` and `ai_train/mnist_cnn_modified.py` # Vom erstem Publisher
 * Write a subscriber to receive image data from the following topic
   * /camera/output/specific/compressed_img_msgs
 * Train a model of your choice for the mnist data with keras (or use the predefined in `ai_train/models/`)
@@ -48,4 +48,3 @@ Optional part for further knowledge.
 ### 4)
 * Make use of ROS network capability and use publishing camera data on one device and predicting on another (see ROS network tutorial therefore: http://wiki.ros.org/ROS/Tutorials/MultipleMachines, do not use plain python. Use ROS on both machines/VMs)
 * Adapt your application to a more complex problem, like cifar or real images based on webcam input (you can find an implemented publisher for the webcam in `CameraPseudo.py`)
-	

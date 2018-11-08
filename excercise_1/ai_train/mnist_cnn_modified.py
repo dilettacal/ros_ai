@@ -34,7 +34,7 @@ img_rows, img_cols = 28, 28
 # the data, split between train and test sets
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-#Set up Data format. If "channel_first", first array entry is channel, otherwise this is the last entry
+#Set up Data format. Tiefe, Breite, Hoehe oder Breite, Hoehe, Tiefe
 if k.image_data_format() == 'channels_first':
     x_train = x_train.reshape(x_train.shape[0], 1, img_rows, img_cols)
     x_test = x_test.reshape(x_test.shape[0], 1, img_rows, img_cols)
@@ -59,6 +59,7 @@ print(x_test.shape[0], 'test samples')
 y_train = keras.utils.to_categorical(y_train, num_classes)
 y_test = keras.utils.to_categorical(y_test, num_classes)
 
+#Netzstrutur wird gebaut
 #Select model = Sequential --> model is created layer by layer
 model = Sequential()
 #Model is made up of 2 Convolution2D, MaxPooling, Dropout then Flatten and Dense
@@ -77,10 +78,13 @@ model.add(Dense(units=128,
 model.add(Dropout(rate=0.5))
 model.add(Dense(units=num_classes,
                 activation='softmax'))
-
+#Alles wird zu einem Model zusammegefügt
+#Metric--> Genauigkeit
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
+
+#TensorBoard --> Zeigt die Kernelsachen an, Layer, Graph zeichnen
 
 # callbacks =https://keras.io/callbacks/
 #A callback is a set of functions to be applied at given stages of the training procedure.
@@ -91,10 +95,10 @@ cb_checkpoint = callbacks.ModelCheckpoint(
     filepath=file_path,
     monitor='val_acc',
     save_best_only=True,
-    save_weights_only=False,
+    save_weights_only=False, #Wir wollen nicht nur Gewichte, sondern auch wissen, wo etwas geschietert ist
     mode='max')
 
-callbacks = [cb_tensorboard, cb_checkpoint]
+callbacks = [cb_tensorboard, cb_checkpoint]#Nach jeder Epoche kann man das Model speichern
 
 # training
 model.fit(x_train,
@@ -102,7 +106,7 @@ model.fit(x_train,
           validation_data=(x_test, y_test),
           batch_size=batch_size,
           epochs=epochs,
-          # callbacks=callbacks,
+          # callbacks=callbacks, #Model speichern direkt hier
           verbose=verbose_train)
 
 # evaluation
@@ -123,13 +127,14 @@ print("Weights saved!")
 index = 0
 
 # expand dimension for batch
-input_data = np.expand_dims(x_test[index], axis=0)  # tensorflow
+input_data = np.expand_dims(x_test[index], axis=0)  # Keras erwartet (H,B,T) --> (Bs, H, B, T), Bs = Batch size also eine Dim groesser
 input_label = y_test[index]
 
 # example prediction call
-prediction = model.predict(input_data)
+prediction = model.predict(input_data) #Bild: (1,28,28)
 
 # revert from one-hot encoding
+# Rueckwaerts vom OHE
 prediction = np.argmax(prediction, axis=None, out=None)
 input_label = np.argmax(input_label, axis=None, out=None)
 
