@@ -78,7 +78,7 @@ model.add(Dense(units=128,
 model.add(Dropout(rate=0.5))
 model.add(Dense(units=num_classes,
                 activation='softmax'))
-#Alles wird zu einem Model zusammegefügt
+#Alles wird zu einem Model zusammegefuegt
 #Metric--> Genauigkeit
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
@@ -88,7 +88,6 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 
 # callbacks =https://keras.io/callbacks/
 #A callback is a set of functions to be applied at given stages of the training procedure.
-#get a view on internal states and statistics of the model during training
 cb_tensorboard = callbacks.TensorBoard(write_images=True)
 
 cb_checkpoint = callbacks.ModelCheckpoint(
@@ -128,6 +127,7 @@ index = 0
 
 # expand dimension for batch
 input_data = np.expand_dims(x_test[index], axis=0)  # Keras erwartet (H,B,T) --> (Bs, H, B, T), Bs = Batch size also eine Dim groesser
+print(input_data.shape)
 input_label = y_test[index]
 
 # example prediction call
@@ -135,6 +135,7 @@ prediction = model.predict(input_data) #Bild: (1,28,28)
 
 # revert from one-hot encoding
 # Rueckwaerts vom OHE
+#Use in prediction to predict on normal values!
 prediction = np.argmax(prediction, axis=None, out=None)
 input_label = np.argmax(input_label, axis=None, out=None)
 

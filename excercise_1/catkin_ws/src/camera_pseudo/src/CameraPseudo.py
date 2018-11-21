@@ -63,7 +63,7 @@ class CameraPseudo:
         #Gleichzeitig wird auch die Nummer geschickt!
         # der Prediction node muss hier lesen und predicten
         # Schickt zurueck an die Kamera
-        # Die Kamera überprüft ihr Ergebnis mit dem Ergebnis
+        # Die Kamera ueberprueft ihr Ergebnis mit dem Ergebnis
         self.publisher_random_number = rospy.Publisher("/camera/output/random/number",
                                                        Int32,
                                                        queue_size=1)
@@ -85,7 +85,7 @@ class CameraPseudo:
 
         while not rospy.is_shutdown():
             self.publish_specific(verbose)
-            self.publish_random(verbose)
+            self.publish_random(verbose=False)
 
             # Note:
             # reactivate for webcam image. Pay attention to required subscriber buffer size.

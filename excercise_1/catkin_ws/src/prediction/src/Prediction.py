@@ -12,41 +12,62 @@ from std_msgs.msg import Bool, Int32
 from std_msgs.msg import String
 from std_msgs.msg import Float32
 from sensor_msgs.msg import Image
+from keras import backend as K
 #catkin_ws/src/camera_pseudo/src/CameraPseudo.py
-import CameraPseudo
 
 class Prediction:
     def __init__(self):
         self.cv_bridge = CvBridge()
-        #Model used: The given model
-        self.model = load_model("/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5")
+        #Aufgabe 1.4 - Include the model in Prediction.py
+        self.cnn_model = load_model("/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5")
+        self.cnn_model._make_predict_function() #Initialize before threading
+        self.spec_sequences = []
         self.session = k.get_session()
         self.graph = tf.get_default_graph()
         self.graph.finalize() #thread-safe
         rospy.loginfo("Model loaded!")
+        
         #Test
-        #print(self.model.summary())
+        print("Model summary: ")
+        print(self.cnn_model.summary())
 
-    def callback(self, image_msg):
-        target_size = (28, 28)
-        #First convert the image to OpenCV image
-        cv_image = bridge.imgmsg_to_cv2(image_msg, desired_encoding="passthrough")
-        cv_image = cv2.resize(cv_image, target_size)  # resize image
-        np_image = np.asarray(cv_image)               # read as np array
-        np_image = np.expand_dims(np_image, axis=0)   # Add another dimension for tensorflow
-        np_image = np_image.astype(float)  # preprocess needs float64 and img is uint8
-        np_image = preprocess_input(np_image)         # Normalize the data
 
-        global graph                                  # This is a workaround for asynchronous execution
-        with graph.as_default():
-           preds = self.model.predict(np_image)            # Classify the image
-           # decode returns a list  of tuples [(class,description,probability),(class, descrip ...
-           pred_string = decode_predictions(preds, top=1)[0]   # Decode top 1 predictions
-           msg_string.data = pred_string[0][1]
-           msg_float.data = float(pred_string[0][2])
-           pub.publish(msg_string)
-           rospy.loginfo("Float: " + str(msg_float.data))
-           #pub1.publish(msg_float)
+    def callback_images(self, data):
+        rospy.loginfo('received image of type: "%s"' %data.format) #jpg
+        rospy.loginfo(data.header.seq)
+        img_np_arr = np.fromstring(data.data, np.uint8)
+        #rospy.loginfo(np_arr)
+        #https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
+        encoded_img = cv2.imdecode(img_np_arr, cv2.IMREAD_GRAYSCALE)
+        print(encoded_img.shape)
+        #K.expand_dims(x, 1)
+        #ValueError: Error when checking input: expected conv2d_1_input 
+        #to have 4 dimensions, but got array with shape (1, 28, 28)
+        
+        #ValueError: Error when checking input: expected conv2d_1_input to have shape (28, 28, 1) but got array with shape (1, 28, 28)
+        expanded_img = np.expand_dims(encoded_img,axis=0)
+        print(expanded_img.shape)
+        prediction =  self.cnn_model.predict(expanded_img)
+        print(prediction)
+        
+        self.spec_sequences.append((data.header.seq, prediction))
+        print(self.spec_sequences)
+       # rospy.loginfo(image_np)
+       # cv2.imshow('cv_img', image_np)
+        #return data
+
+    def callback_check(self, data):
+        rospy.loginfo("Check " + rospy.get_caller_id())
+        rospy.loginfo(data.header.seq)   
+
+    def specific_listener(self):
+        specific_topic = '/camera/output/specific/compressed_img_msgs'
+        rospy.Subscriber(specific_topic,
+                         CompressedImage, 
+                         self.callback_images, 
+                         queue_size = 1)
+       
+
 
 def main():
     try:
@@ -54,29 +75,22 @@ def main():
         rospy.init_node('prediction', anonymous=False)
 
         # init CameraPseudo
-        camera = CameraPseudo()
         pred = Prediction()
-
-        #Publish on
-        #//camera/input/specific/number #CameraPseudo is subscriber
-        #String oder Float32?
-        pub = rospy.Publisher("/camera/input/specific/number ", Float32 ,queue_size=1)
-        bridge = CvBridge()
-
-        msg_string = String()
-        msg_float = Float32()
-
-        rospy.Subscriber("/camera/output/specific/check", Image, pred.callback, queue_size = 1, buff_size = 16777216)
+        
+        #Aufgabe 1.2
+        #Subscriber to /camera/output/specific/compressed_img_msgs
+        pred.specific_listener()
+        
+        #Aufgabe 1.5
+        #Publisher to /camera/input/specific/number
+        
+        
+        #Aufgabe 1.6
+        #Subscriber (Check) to /camera/output/specific/check
 
         while not rospy.is_shutdown():
           rospy.spin()
 
-        #Verify on
-        #/camera/output/specific/check
-
-
-
-        #rospy.spin()
     except rospy.ROSInterruptException:
         pass
 
