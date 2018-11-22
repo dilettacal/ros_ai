@@ -21,7 +21,13 @@ class Prediction:
         #Aufgabe 1.4 - Include the model in Prediction.py
         self.cnn_model = load_model("/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5")
         self.cnn_model._make_predict_function() #Initialize before threading
-        self.spec_sequences = []
+        #Aufgabe 1.5
+        #Publisher to /camera/input/specific/number
+        self.prediction_publisher = rospy.Publisher("/camera/input/specific/number",
+                                                        Int32,
+                                                        queue_size=1)
+        
+        self.spec_pred = []
         self.session = k.get_session()
         self.graph = tf.get_default_graph()
         self.graph.finalize() #thread-safe
@@ -44,17 +50,26 @@ class Prediction:
         image_expanded = np.expand_dims(image, axis=0) #(1,28,28)
         image_expanded_pred = np.expand_dims(image_expanded,axis=3)
         
-        prediction_ohe =  self.cnn_model.predict(image_expanded_pred)
+        prediction_ohe =  self.cnn_model.predict(image_expanded_pred) #one hot encoded
         
         prediction = np.argmax(prediction_ohe, axis=None, out=None)
         print("Predicted number:", prediction)
+        self.spec_pred.append(prediction)#Speichert die Prediction
+        
+        self.publish_prediction(prediction)
+        
+        
+        
+    def publish_prediction(self, pred):
+        print("Published!")
+        self.prediction_publisher.publish(pred)
         
 
     def callback_check(self, data):
         rospy.loginfo("Check " + rospy.get_caller_id())
         rospy.loginfo(data.header.seq)   
 
-    def specific_listener(self):
+    def specific_subscriber(self):
         specific_topic = '/camera/output/specific/compressed_img_msgs'
         rospy.Subscriber(specific_topic,
                          CompressedImage, 
@@ -73,10 +88,8 @@ def main():
         
         #Aufgabe 1.2
         #Subscriber to /camera/output/specific/compressed_img_msgs
-        pred.specific_listener()
+        pred.specific_subscriber()
         
-        #Aufgabe 1.5
-        #Publisher to /camera/input/specific/number
         
         
         #Aufgabe 1.6
