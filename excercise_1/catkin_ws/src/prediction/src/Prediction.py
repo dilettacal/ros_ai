@@ -35,36 +35,20 @@ class Prediction:
     def callback_images(self, data):
         print("Header")
         rospy.loginfo(data.header.seq) 
-        #elf.cv_bridge.cv2_to_compressed_imgmsg
         image = self.cv_bridge.compressed_imgmsg_to_cv2(data)
-        #img_np_arr = np.fromstring(data.data, np.uint8)
-        #rospy.loginfo(np_arr)
-        #https://docs.opencv.org/3.0-beta/doc/py_tutorials/py_gui/py_image_display/py_image_display.html
         """
         cv2.IMREAD_COLOR : Loads a color image. Any transparency of image will be neglected. It is the default flag.
         cv2.IMREAD_GRAYSCALE : Loads image in grayscale mode
         cv2.IMREAD_UNCHANGED : Loads image as such including alpha channel
         """
-        #encoded_img = cv2.imdecode(image, cv2.IMREAD_GRAYSCALE)
-        #print(encoded_img.shape)
-        #ValueError: Error when checking input: expected conv2d_1_input 
-        #to have 4 dimensions, but got array with shape (1, 28, 28)
-        
-        #ValueError: Error when checking input: expected conv2d_1_input to have shape (28, 28, 1) but got array with shape (1, 28, 28)
-        #expanded_img = np.expand_dims(encoded_img,axis=0)
-        #print(expanded_img.shape)
-        
-        #cv2.resize(im,  (img_rows, img_cols))
         image_expanded = np.expand_dims(image, axis=0) #(1,28,28)
         image_expanded_pred = np.expand_dims(image_expanded,axis=3)
-        prediction =  self.cnn_model.predict(image_expanded_pred)
-        print(prediction)
         
-      #  self.spec_sequences.append((data.header.seq, prediction))
-       # print(self.spec_sequences)
-      # # rospy.loginfo(image_np)
-       # cv2.imshow('cv_img', image_np)
-        #return data
+        prediction_ohe =  self.cnn_model.predict(image_expanded_pred)
+        
+        prediction = np.argmax(prediction_ohe, axis=None, out=None)
+        print("Predicted number:", prediction)
+        
 
     def callback_check(self, data):
         rospy.loginfo("Check " + rospy.get_caller_id())
