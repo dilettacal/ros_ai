@@ -27,7 +27,7 @@ class Prediction:
                                                         Int32,
                                                         queue_size=1)
         
-        self.spec_pred = []
+        self.spec_pred = -1
         self.session = k.get_session()
         self.graph = tf.get_default_graph()
         self.graph.finalize() #thread-safe
@@ -54,26 +54,33 @@ class Prediction:
         
         prediction = np.argmax(prediction_ohe, axis=None, out=None)
         print("Predicted number:", prediction)
-        self.spec_pred.append(prediction)#Speichert die Prediction
+        self.spec_pred = prediction#Speichert die Prediction
         
         self.publish_prediction(prediction)
         
-        
+        print("Prediction check:", self.prediction_check)
         
     def publish_prediction(self, pred):
-        print("Published!")
         self.prediction_publisher.publish(pred)
         
 
     def callback_check(self, data):
-        rospy.loginfo("Check " + rospy.get_caller_id())
-        rospy.loginfo(data.header.seq)   
+        assert self.spec_pred != -1
+        self.prediction_check = (data.data == self.spec_pred)
 
     def specific_subscriber(self):
         specific_topic = '/camera/output/specific/compressed_img_msgs'
         rospy.Subscriber(specific_topic,
                          CompressedImage, 
                          self.callback_images, 
+                         queue_size = 1)
+        
+    
+    def subscriber_check(self):
+        topic = "/camera/output/specific/check"
+        rospy.Subscriber(topic,
+                         Bool, 
+                         self.callback_check, 
                          queue_size = 1)
        
 
@@ -94,6 +101,7 @@ def main():
         
         #Aufgabe 1.6
         #Subscriber (Check) to /camera/output/specific/check
+        pred.subscriber_check()
 
         while not rospy.is_shutdown():
           rospy.spin()
