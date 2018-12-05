@@ -15,10 +15,9 @@ from sensor_msgs.msg import Image
 from keras import backend as K
 
 
-PUBLISH_RATE = 2 #Hz
-
-
 class Prediction:
+    global_random_predictions = list() 
+    
     def __init__(self, subscribe_specific=True, subscribe_random=True):
         self.cv_bridge = CvBridge()
         
@@ -90,8 +89,11 @@ class Prediction:
         
         
     def callback_check_specific(self, data):
+        print("############### Specific Check ######################")
         #data is a boolean value
         rospy.loginfo("Specific number check: The prediction was {}".format(data.data))
+        
+        print("#####################################################")
 
     ###RANDOM
     
@@ -103,30 +105,43 @@ class Prediction:
         #Prediction - one hot encoded
         prediction_ohe =  self.model.predict(image_for_prediction) 
         #Prediction as a real number 
-        prediction = np.argmax(prediction_ohe, axis=None, out=None) 
-        
-        self.random_predictions.append(prediction) #Appends the prediction at the end
-        #(e.g. [2, 7, 8, 0, 5, 6, 6, 3, 5, 3, 8, 2, 2, 9, 4, 4])
-        print("Prediction status", self.random_predictions)
+        prediction = np.argmax(prediction_ohe, axis=None, out=None)         
+        #Try with static list
+        Prediction.global_random_predictions.append(prediction)    
         
     
     def callback_check_random(self,data):
         #Slow down
-        rate = rospy.Rate(PUBLISH_RATE)
+        rate = rospy.Rate(3)
         rate.sleep()
         number = data.data
-        index = -1 #The last number is the last predicted value
-        self._verify(number, index)
+        #Synchronization problems
+        #Starts with -2, if IndexOutOfBounds then switch to -1. Choosing -1 affects the prediction
+        #exception = False
+        try:
+            self._verify(number, -2)
+        except (IndexError):
+            #exception = True
+        #if(exception):
+            try:
+                self._verify(number, -1)
+                rate.sleep()
+            except(IndexError):
+                pass
 
 
     def _verify(self, number, index):
-        prediction = self.random_predictions[index]
-        if(number == prediction):
-            result = True
-        else:
-            result = False
-        rospy.loginfo("Actual number is {}, predicted number is {}".format(number, prediction))  
-        print("***********************************************+")
+        print("************** Random check *****************")   
+        print("Random predictions status: ", Prediction.global_random_predictions)
+        #prediction = self.random_predictions[index]
+        prediction = Prediction.global_random_predictions[index]
+        #pred_global_list = global_list[index]
+        
+        result = True if number == prediction else False           
+       
+        rospy.loginfo("Actual number is {}, predicted number is {}.\n Prediction was {}".format(number, prediction, result))  
+        
+        print("*******************************************************************")
         
         
     ### Start subscribers

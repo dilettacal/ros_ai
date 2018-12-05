@@ -85,7 +85,7 @@ class CameraPseudo:
 
         while not rospy.is_shutdown():
             self.publish_specific(verbose)
-            self.publish_random(verbose=False)
+            self.publish_random(verbose)
 
             # Note:
             # reactivate for webcam image. Pay attention to required subscriber buffer size.
