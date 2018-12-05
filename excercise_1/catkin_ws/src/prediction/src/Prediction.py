@@ -114,34 +114,39 @@ class Prediction:
         #Slow down
         rate = rospy.Rate(3)
         rate.sleep()
-        number = data.data
+        number = data
         #Synchronization problems
         #Starts with -2, if IndexOutOfBounds then switch to -1. Choosing -1 affects the prediction
         #exception = False
         try:
-            self._verify(number, -2)
+            self._verify(number, -1)
         except (IndexError):
             #exception = True
         #if(exception):
             try:
-                self._verify(number, -1)
-                rate.sleep()
+                self._verify(number, -2)
+               # rate.sleep()
+               #try with new rate
+                rate2 = rospy.Rate(5)
+                rate2.sleep()
+               
             except(IndexError):
+                print("Index out of bound!")
                 pass
 
 
     def _verify(self, number, index):
-        print("************** Random check *****************")   
+        number = number.data
+        print("--------------------------- Random check ---------------------------")   
         print("Random predictions status: ", Prediction.global_random_predictions)
-        #prediction = self.random_predictions[index]
-        prediction = Prediction.global_random_predictions[index]
-        #pred_global_list = global_list[index]
         
-        result = True if number == prediction else False           
+        prediction = Prediction.global_random_predictions[index]
+        
+        result = True if number == prediction else False      
        
         rospy.loginfo("Actual number is {}, predicted number is {}.\n Prediction was {}".format(number, prediction, result))  
         
-        print("*******************************************************************")
+        print("---------------------------------------------------------------------")
         
         
     ### Start subscribers
