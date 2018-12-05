@@ -22,6 +22,10 @@ class Prediction:
     def __init__(self, subscribe_specific=True, subscribe_random=True):
         self.cv_bridge = CvBridge()
         
+        #Aufgabe 1.4 - Include the model in Prediction.py
+        self.model = load_model("/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5")
+        self.model._make_predict_function() #Initialize before threading
+        
         if(subscribe_specific):
         
             ## Tasks "SPECIFIC"
@@ -42,30 +46,23 @@ class Prediction:
         if(subscribe_random):
             ## Tasks "RANDOM"
             
-            #Aufgabe
+            #Aufgabe 2.1
+            # Subscriber to /camera/output/random/compressed_img_msgs 
+            self.start_random_subscriber_check()
+            
+            #Aufgabe 2.2
             #Subscriber to /camera/output/random/number - verifiy prediction
             self.start_random_subscriber()
             
-            #Aufgabe
-            # Subscriber to /camera/output/random/compressed_img_msgs 
-            self.start_random_subscriber_check()
+          
        
-        #Aufgabe 1.4 - Include the model in Prediction.py
-        self.cnn_model = load_model("/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5")
-        self.cnn_model._make_predict_function() #Initialize before threading
-        
-        self.spec_pred = -1
         #Make Keras predict on more threads
         self.session = k.get_session()
         self.graph = tf.get_default_graph()
         self.graph.finalize() #thread-safe
         
-        #rospy.loginfo("Model loaded!")
         
-        #Test
-        print("Model summary: ")
-        print(self.cnn_model.summary())
-
+        self.random_predictions = []
 
     def process_image(self, image):
         """ Excercise: 21-11-2018 """
@@ -73,37 +70,65 @@ class Prediction:
         image_expanded_pred = np.expand_dims(image_expanded,axis=3)
         return image_expanded_pred
         
-    
-    def publish_prediction(self, pred):
-        self.prediction_publisher.publish(pred)
-        
+       
      
     #### Callbacks
+    
     ### SPECIFIC
     def callback_img_specific(self, data):
         image = self.cv_bridge.compressed_imgmsg_to_cv2(data) #Retrieves images from data
         image_for_prediction = self.process_image(image) #Convert image, in order to be elaborate
         
         #Prediction - one hot encoded
-        prediction_ohe =  self.cnn_model.predict(image_for_prediction) 
+        prediction_ohe =  self.model.predict(image_for_prediction) 
         
         #Prediction as a real number 
         prediction = np.argmax(prediction_ohe, axis=None, out=None) 
         
-        #TO remove
-        print("Predicted number:", prediction)
-        self.spec_pred = prediction#Speichert die Prediction
-        
-        self.publish_prediction(prediction)
-        
-        #print("Prediction check:", self.prediction_check) Fehler
+        #Publish predicted value through Publisher
+        self.prediction_publisher.publish(prediction)
         
         
     def callback_check_specific(self, data):
-        assert self.spec_pred != -1
-        self.prediction_check = (data.data == self.spec_pred)
+        #data is a boolean value
+        rospy.loginfo("Specific number check: The prediction was {}".format(data.data))
+
+    ###RANDOM
+    
+    def callback_img_random(self, data):
+        #Process image
+        image = self.cv_bridge.compressed_imgmsg_to_cv2(data) #Retrieves images from data
+        image_for_prediction = self.process_image(image) #Convert image, in order to be elaborate
+        
+        #Prediction - one hot encoded
+        prediction_ohe =  self.model.predict(image_for_prediction) 
+        #Prediction as a real number 
+        prediction = np.argmax(prediction_ohe, axis=None, out=None) 
+        
+        self.random_predictions.append(prediction) #Appends the prediction at the end
+        #(e.g. [2, 7, 8, 0, 5, 6, 6, 3, 5, 3, 8, 2, 2, 9, 4, 4])
+        print("Prediction status", self.random_predictions)
+        
+    
+    def callback_check_random(self,data):
+        #Slow down
+        rate = rospy.Rate(PUBLISH_RATE)
+        rate.sleep()
+        number = data.data
+        index = -1 #The last number is the last predicted value
+        self._verify(number, index)
 
 
+    def _verify(self, number, index):
+        prediction = self.random_predictions[index]
+        if(number == prediction):
+            result = True
+        else:
+            result = False
+        rospy.loginfo("Actual number is {}, predicted number is {}".format(number, prediction))  
+        print("***********************************************+")
+        
+        
     ### Start subscribers
     ### SPECIFIC
     
@@ -122,20 +147,20 @@ class Prediction:
                          self.callback_check_specific, 
                          queue_size = 1)
      
-       ### RANDOM     
-    def start_random_subscriber(self):
+    ### RANDOM     
+    def start_random_subscriber_check(self):
         topic = "/camera/output/random/number"
         rospy.Subscriber(topic,
                          Int32, 
-                         #self.callback_check
+                         self.callback_check_random
                          )
        
    
-    def start_random_subscriber_check(self):
+    def start_random_subscriber(self):
         topic = "/camera/output/random/compressed_img_msgs"
         rospy.Subscriber(topic,
                          CompressedImage, 
-                         #self.callback_check
+                         self.callback_img_random
                          )
 
 
