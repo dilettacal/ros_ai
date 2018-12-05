@@ -112,19 +112,23 @@ class Prediction:
     
     def callback_check_random(self,data):
         #Slow down
-        rate = rospy.Rate(3)
+        #Rate 1 and 5 are good
+        rate = rospy.Rate(1)
         rate.sleep()
+        
         number = data
         #Synchronization problems
         #Starts with -2, if IndexOutOfBounds then switch to -1. Choosing -1 affects the prediction
         #exception = False
-        try:
-            self._verify(number, -1)
+        try:            
+            self._verify(number, -2)
+            
         except (IndexError):
             #exception = True
         #if(exception):
             try:
-                self._verify(number, -2)
+                self._verify(number, -1)
+                
                # rate.sleep()
                #try with new rate
                 rate2 = rospy.Rate(5)
