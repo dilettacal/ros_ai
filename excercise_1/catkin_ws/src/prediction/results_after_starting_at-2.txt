@@ -1,0 +1,181 @@
+Using TensorFlow backend.
+2018-12-05 16:40:29.350303: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
+############### Specific Check ######################
+[INFO] [1544024430.616928]: Specific number check: The prediction was True
+#####################################################
+############### Specific Check ######################
+ ************** Random check *****************
+('Random predictions status: ', [2])
+************** Random check *****************
+('Random predictions status: ', [2])
+[INFO] [1544024431.491886]: Actual number is 2, predicted number is 2.
+ Prediction was True
+*******************************************************************
+[INFO] [1544024431.500926]: Specific number check: The prediction was True
+#####################################################
+############### Specific Check ######################
+[INFO] [1544024432.480988]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9])
+[INFO] [1544024432.509895]: Actual number is 1, predicted number is 1.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024433.481247]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3])
+[INFO] [1544024433.513428]: Actual number is 9, predicted number is 9.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024434.477810]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3])
+[INFO] [1544024434.518567]: Actual number is 3, predicted number is 3.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024435.477100]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5])
+[INFO] [1544024435.522169]: Actual number is 5, predicted number is 3.
+ Prediction was False
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024436.479572]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4])
+[INFO] [1544024436.525447]: Actual number is 5, predicted number is 5.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024437.479244]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3])
+[INFO] [1544024437.527885]: Actual number is 4, predicted number is 4.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024438.477900]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0])
+[INFO] [1544024438.530286]: Actual number is 3, predicted number is 3.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024439.484227]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6])
+[INFO] [1544024439.533093]: Actual number is 0, predicted number is 0.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024440.481322]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4])
+[INFO] [1544024440.535772]: Actual number is 6, predicted number is 6.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024441.485726]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2])
+[INFO] [1544024441.538460]: Actual number is 4, predicted number is 4.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024442.479555]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8])
+[INFO] [1544024442.542508]: Actual number is 2, predicted number is 2.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024443.486300]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8])
+[INFO] [1544024443.545396]: Actual number is 8, predicted number is 8.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024444.483188]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2])
+[INFO] [1544024444.551293]: Actual number is 8, predicted number is 8.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024445.477275]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6])
+[INFO] [1544024445.554688]: Actual number is 2, predicted number is 2.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024446.483891]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4])
+[INFO] [1544024446.557639]: Actual number is 6, predicted number is 6.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024447.499360]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4, 7])
+[INFO] [1544024447.559976]: Actual number is 4, predicted number is 4.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024448.495054]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4, 7, 2])
+[INFO] [1544024448.562889]: Actual number is 7, predicted number is 7.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024449.494156]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4, 7, 2, 7])
+[INFO] [1544024449.566260]: Actual number is 2, predicted number is 2.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024450.494545]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4, 7, 2, 7, 1])
+[INFO] [1544024450.568689]: Actual number is 7, predicted number is 7.
+ Prediction was True
+*******************************************************************
+############### Specific Check ######################
+[INFO] [1544024451.488678]: Specific number check: The prediction was True
+#####################################################
+************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4, 7, 2, 7, 1, 4])
+[INFO] [1544024451.570919]: Actual number is 1, predicted number is 1.
+ Prediction was True
+*******************************************************************
+^C************** Random check *****************
+('Random predictions status: ', [2, 1, 9, 3, 3, 5, 4, 3, 0, 6, 4, 2, 8, 8, 2, 6, 4, 7, 2, 7, 1, 4])
+[INFO] [1544024452.573359]: Actual number is 4, predicted number is 1.
+ Prediction was False
+*******************************************************************
+
