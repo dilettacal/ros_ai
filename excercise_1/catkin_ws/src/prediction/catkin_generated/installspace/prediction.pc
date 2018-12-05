@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: prediction
+Description: Description of prediction
+Version: 0.1.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: rospy roscpp sensor_msgs numpy cv_bridge
