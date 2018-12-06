@@ -118,14 +118,15 @@ class Prediction:
         
         number = data
         #Synchronization problems
-        #Starts with -2, if IndexOutOfBounds then switch to -1. Choosing -1 affects the prediction
+       
         #exception = False
         try:            
             self._verify(number, -2)
             
         except (IndexError):
             #exception = True
-        #if(exception):
+        
+       # if(exception):
             try:
                 self._verify(number, -1)
                 
@@ -146,7 +147,10 @@ class Prediction:
         
         prediction = Prediction.global_random_predictions[index]
         
-        result = True if number == prediction else False      
+        if(number == prediction):
+            result = True
+        else:
+            result = False
        
         rospy.loginfo("Actual number is {}, predicted number is {}.\n Prediction was {}".format(number, prediction, result))  
         
