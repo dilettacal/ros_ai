@@ -117,22 +117,21 @@ class Prediction:
         rate.sleep()
         
         number = data
-        #Synchronization problems
-       
-        #exception = False
+        
+        exception = False
         try:            
             self._verify(number, -2)
             
         except (IndexError):
-            #exception = True
+            exception = True
         
-       # if(exception):
+        if(exception):
             try:
                 self._verify(number, -1)
                 
                # rate.sleep()
                #try with new rate
-                rate2 = rospy.Rate(5)
+                rate2 = rospy.Rate(7)
                 rate2.sleep()
                
             except(IndexError):
@@ -144,6 +143,7 @@ class Prediction:
         number = number.data
         print("--------------------------- Random check ---------------------------")   
         print("Random predictions status: ", Prediction.global_random_predictions)
+        print("Size:", len(Prediction.global_random_predictions))
         
         prediction = Prediction.global_random_predictions[index]
         
@@ -180,7 +180,8 @@ class Prediction:
         topic = "/camera/output/random/number"
         rospy.Subscriber(topic,
                          Int32, 
-                         self.callback_check_random
+                         self.callback_check_random,
+                         queue_size = 1
                          )
        
    
@@ -188,7 +189,8 @@ class Prediction:
         topic = "/camera/output/random/compressed_img_msgs"
         rospy.Subscriber(topic,
                          CompressedImage, 
-                         self.callback_img_random
+                         self.callback_img_random,
+                         queue_size = 1
                          )
 
 
