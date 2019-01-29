@@ -68,7 +68,7 @@ set(prediction_CONFIG_INCLUDED TRUE)
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
   set(prediction_SOURCE_PREFIX /home/ros18/KI/ros_robotics/excercise_1/catkin_ws/src/prediction)
-  set(prediction_DEVEL_PREFIX /home/ros18/KI/ros_robotics/excercise_1/catkin_ws/src/prediction/devel)
+  set(prediction_DEVEL_PREFIX /home/ros18/KI/ros_robotics/excercise_1/catkin_ws/src/devel)
   set(prediction_INSTALL_PREFIX "")
   set(prediction_PREFIX ${prediction_DEVEL_PREFIX})
 else()

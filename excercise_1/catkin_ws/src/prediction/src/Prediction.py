@@ -20,15 +20,16 @@ class Prediction:
     
     def __init__(self, subscribe_specific=True, subscribe_random=True):
         self.cv_bridge = CvBridge()
+        path_to_model = "/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5" #model weights from training
         
         #Aufgabe 1.4 - Include the model in Prediction.py
-        self.model = load_model("/home/ros18/KI/ros_robotics/excercise_1/ai_train/models/weights-best.hdf5")
+        self.model = load_model(path_to_model)
         self.model._make_predict_function() #Initialize before threading
+        self.false_predicted_counter = 0
         
         if(subscribe_specific):
         
-            ## Tasks "SPECIFIC"
-            
+            ## Tasks "SPECIFIC"            
             #Aufgabe 1.2
             #Subscriber to /camera/output/specific/compressed_img_msgs
             self.start_specific_subscriber()
@@ -43,8 +44,7 @@ class Prediction:
             self.start_specific_subscriber_check()
             
         if(subscribe_random):
-            ## Tasks "RANDOM"
-            
+            ## Tasks "RANDOM"            
             #Aufgabe 2.1
             # Subscriber to /camera/output/random/compressed_img_msgs 
             self.start_random_subscriber_check()
@@ -92,8 +92,7 @@ class Prediction:
         print("############### Specific Check ######################")
         #data is a boolean value
         rospy.loginfo("Specific number check: The prediction was {}".format(data.data))
-        
-        print("#####################################################")
+       
 
     ###RANDOM
     
@@ -117,8 +116,9 @@ class Prediction:
         rate.sleep()
         
         number = data
+        self._verify(number)
         
-        exception = False
+        """exception = False
         try:            
             self._verify(number, -2)
             
@@ -136,10 +136,10 @@ class Prediction:
                
             except(IndexError):
                 print("Index out of bound!")
-                pass
+                pass"""
 
 
-    def _verify(self, number, index):
+    def _verify(self, number, index=-1):
         number = number.data
         print("--------------------------- Random check ---------------------------")   
         print("Random predictions status: ", Prediction.global_random_predictions)
@@ -151,6 +151,8 @@ class Prediction:
             result = True
         else:
             result = False
+            false_predicted_counter+=1
+        
        
         rospy.loginfo("Actual number is {}, predicted number is {}.\n Prediction was {}".format(number, prediction, result))  
         
@@ -161,6 +163,7 @@ class Prediction:
     ### SPECIFIC
     
     def start_specific_subscriber(self):
+        rospy.loginfo("Subscribe to specific images")
         specific_topic = '/camera/output/specific/compressed_img_msgs'
         rospy.Subscriber(specific_topic,
                          CompressedImage, 
@@ -169,6 +172,7 @@ class Prediction:
         
     
     def start_specific_subscriber_check(self):
+        rospy.loginfo("Subscribe to specific check channel")
         topic = "/camera/output/specific/check"
         rospy.Subscriber(topic,
                          Bool, 
@@ -177,6 +181,7 @@ class Prediction:
      
     ### RANDOM     
     def start_random_subscriber_check(self):
+        rospy.loginfo("Subscribe to random check")
         topic = "/camera/output/random/number"
         rospy.Subscriber(topic,
                          Int32, 
@@ -186,6 +191,7 @@ class Prediction:
        
    
     def start_random_subscriber(self):
+        rospy.loginfo("Subscribe to random images")
         topic = "/camera/output/random/compressed_img_msgs"
         rospy.Subscriber(topic,
                          CompressedImage, 
@@ -206,6 +212,8 @@ def main():
           rospy.spin()
 
     except rospy.ROSInterruptException:
+        rospy.loginfo("False predicted labels: ")
+        rospy.loginfo(pred.false_predicted_counter)
         pass
 
 

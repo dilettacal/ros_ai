@@ -16,7 +16,7 @@ from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import Bool, Int32
 
 SPECIFIC_VALUE = 6  # value can be changed for different test-cases. This is not the labeled value but an index
-PUBLISH_RATE = 1  # hz, standard == 3
+PUBLISH_RATE = 0.25  # hz, standard == 3
 USE_WEBCAM = False
 
 class CameraPseudo:
@@ -145,21 +145,8 @@ class CameraPseudo:
 
 def main():
     verbose = 1  # use 1 for debug
-    """[INFO] [1541604798.359488]: Publishing data...
-    [INFO] [1541604798.361513]: Begin publish_specific....
-    [INFO] [1541604798.363646]: 1
-    [INFO] [1541604798.365042]: jpg
-    [INFO] [1541604798.366487]: End publish_specific
-    [INFO] [1541604798.368197]: Begin publish_random....
-    [INFO] [1541604798.369477]: 0
-    [INFO] [1541604798.373983]: jpg
-    [INFO] [1541604798.375834]: Label: 1
-    [INFO] [1541604798.377541]: End publish_random.
-    [INFO] [1541604799.362856]: Begin publish_specific....
-    [INFO] [1541604799.367793]: 2
-    [INFO] [1541604799.372904]: jpg
-    [INFO] [1541604799.382484]: End publish_specific
-    """
+    rospy.loginfo("Publish rate: ")
+    rospy.loginfo(PUBLISH_RATE)
     try:
         # register node
         rospy.init_node('camera_pseudo', anonymous=False) #anonymous --> eindeutiger Identifier (Name)
@@ -168,7 +155,7 @@ def main():
         cam = CameraPseudo()
 
         # start publishing data
-        cam.publish_data(verbose)
+        cam.publish_data(verbose=0)
 
     except rospy.ROSInterruptException:
         pass

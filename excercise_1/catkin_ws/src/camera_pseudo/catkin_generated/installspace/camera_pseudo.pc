@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: camera_pseudo
+Description: Description of camera_pseudo
+Version: 1.0.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: rospy roscpp sensor_msgs numpy cv_bridge
