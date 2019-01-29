@@ -99,9 +99,21 @@ Die besten Ergebnisse ergaben sich mit einem `PUBLISH_RATE` von 0.3 hz und `rosp
 
 Über den Befehl `rqt_graph` ist es möglich, das ROS-System zu visualisieren.
 
+Der Graph mit nur den Knoten sieht so aus:
+
+
+
+![OnlyNodes](/home/ros18/KI/ros_robotics/rosgraph_onlyNodes.svg)
+
+
+
 Das System mit allen Knoten und allen input und output Topics sieht folgendermaßen aus:
 
 ![RosGraphComplete](rosgraph.png)
+
+
+
+
 
 ## Programm starten	
 
