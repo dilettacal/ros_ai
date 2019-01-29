@@ -101,7 +101,7 @@ Die besten Ergebnisse ergaben sich mit einem `PUBLISH_RATE` von 0.3 hz und `rosp
 
 Das System mit allen Knoten und allen input und output Topics sieht folgendermaßen aus:
 
-![RosGraphComplete](/home/ros18/KI/ros_robotics/excercise_1/rosgraph_allNodesTopics.svg)
+![RosGraphComplete](/excercise_1/rosgraph_allNodesTopics.svg)
 
 ## Programm starten	
 
