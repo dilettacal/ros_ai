@@ -16,7 +16,7 @@ from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import Bool, Int32
 
 SPECIFIC_VALUE = 6  # value can be changed for different test-cases. This is not the labeled value but an index
-PUBLISH_RATE = 0.30  # hz, standard == 3
+PUBLISH_RATE = 0.25  # hz, standard == 3
 USE_WEBCAM = False
 
 class CameraPseudo:
