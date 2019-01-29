@@ -117,27 +117,6 @@ class Prediction:
         
         number = data
         self._verify(number)
-        
-        """exception = False
-        try:            
-            self._verify(number, -2)
-            
-        except (IndexError):
-            exception = True
-        
-        if(exception):
-            try:
-                self._verify(number, -1)
-                
-               # rate.sleep()
-               #try with new rate
-                rate2 = rospy.Rate(7)
-                rate2.sleep()
-               
-            except(IndexError):
-                print("Index out of bound!")
-                pass"""
-
 
     def _verify(self, number, index=-1):
         number = number.data
@@ -151,10 +130,13 @@ class Prediction:
             result = True
         else:
             result = False
-            false_predicted_counter+=1
+            self.false_predicted_counter+=1
         
        
         rospy.loginfo("Actual number is {}, predicted number is {}.\n Prediction was {}".format(number, prediction, result))  
+        if(self.false_predicted_counter>0):
+            msg = str(self.false_predicted_counter) + " times the prediction did not work"
+            rospy.loginfo(msg)
         
         print("---------------------------------------------------------------------")
         
@@ -212,8 +194,6 @@ def main():
           rospy.spin()
 
     except rospy.ROSInterruptException:
-        rospy.loginfo("False predicted labels: ")
-        rospy.loginfo(pred.false_predicted_counter)
         pass
 
 
