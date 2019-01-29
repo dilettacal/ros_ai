@@ -21,10 +21,7 @@ USE_WEBCAM = False
 
 class CameraPseudo:
     def __init__(self):
-        self.cv_bridge = CvBridge() #Wrapper fuer OpenCV in ROS
-
-        # publish webcam
-        #Diese Kamera sendet CompressedImage Formate, queue_size == wie viel Buffer bis Image geschickt wird
+        self.cv_bridge = CvBridge() 
 
         self.publisher_webcam_comprs = rospy.Publisher("/camera/output/webcam/compressed_img_msgs",
                                                        CompressedImage,
@@ -35,35 +32,22 @@ class CameraPseudo:
             if not self.input_stream.isOpened():
                 raise Exception('Camera stream did not open\n')
 
-        # publish specific
-        #Nur ein einziges Bild
-        #/camera/output/specific/compressed_img_msgs == subscribed in SpecificSubscriber (EX1)
-        #1
         self.publisher_specific_comprs = rospy.Publisher("/camera/output/specific/compressed_img_msgs",
                                                          CompressedImage,
                                                          queue_size=1)
 
-	    #This topic is used to save the prediction check
-        #3
         self.publisher_specific_check = rospy.Publisher("/camera/output/specific/check",
                                                         Bool,
                                                         queue_size=1)
 
-        # subscriber specific number --> dazu Publsher im Predicition, erwartet eine Zahl zwischen 0 und 10
         rospy.Subscriber('/camera/input/specific/number',
                          Int32,
                          self.camera_specific_callback)
 
-        # publisher random
-        # Schickt ein random bild
-        #2
         self.publisher_random_comprs = rospy.Publisher("/camera/output/random/compressed_img_msgs",
                                                        CompressedImage,
                                                        queue_size=1)
-        #Gleichzeitig wird auch die Nummer geschickt!
-        # der Prediction node muss hier lesen und predicten
-        # Schickt zurueck an die Kamera
-        # Die Kamera ueberprueft ihr Ergebnis mit dem Ergebnis
+
         self.publisher_random_number = rospy.Publisher("/camera/output/random/number",
                                                        Int32,
                                                        queue_size=1)
@@ -148,7 +132,7 @@ def main():
     rospy.loginfo(PUBLISH_RATE)
     try:
         # register node
-        rospy.init_node('camera_pseudo', anonymous=False) #anonymous --> eindeutiger Identifier (Name)
+        rospy.init_node('camera_pseudo', anonymous=False)
 
         # init CameraPseudo
         cam = CameraPseudo()
