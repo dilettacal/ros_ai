@@ -112,8 +112,8 @@ class Prediction:
     def callback_check_random(self,data):
         #Slow down
         #Rate 1 and 5 are good
-        rate = rospy.Rate(1)
-        rate.sleep()
+       #rate = rospy.Rate(1)
+        #rate.sleep()
         
         number = data
         self._verify(number)
