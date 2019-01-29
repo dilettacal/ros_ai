@@ -15,13 +15,13 @@ from keras.datasets import mnist
 from sensor_msgs.msg import CompressedImage
 from std_msgs.msg import Bool, Int32
 
-SPECIFIC_VALUE = 6  # value can be changed for different test-cases. This is not the labeled value but an index
-PUBLISH_RATE = 0.25  # hz, standard == 3
+SPECIFIC_VALUE = 6  # value can be changed for different test-cases. 
+PUBLISH_RATE = 0.30  # hz, best match on 200 checks
 USE_WEBCAM = False
 
 class CameraPseudo:
     def __init__(self):
-        self.cv_bridge = CvBridge() 
+        self.cv_bridge = CvBridge() #
 
         self.publisher_webcam_comprs = rospy.Publisher("/camera/output/webcam/compressed_img_msgs",
                                                        CompressedImage,

@@ -89,8 +89,6 @@ class Prediction:
         
         
     def callback_check_specific(self, data):
-        print("############### Specific Check ######################")
-        #data is a boolean value
         rospy.loginfo("Specific number check: The prediction was {}".format(data.data))
        
 
@@ -105,24 +103,23 @@ class Prediction:
         prediction_ohe =  self.model.predict(image_for_prediction) 
         #Prediction as a real number 
         prediction = np.argmax(prediction_ohe, axis=None, out=None)         
-        #Try with static list
+        #List
         Prediction.global_random_predictions.append(prediction)    
         
     
     def callback_check_random(self,data):
-        #Slow down
-        #Rate 1 and 5 are good
-       #rate = rospy.Rate(1)
-        #rate.sleep()
+        #best prediction match
+        rate = rospy.Rate(1)
+        rate.sleep()
         
         number = data
         self._verify(number)
 
     def _verify(self, number, index=-1):
-        number = number.data
-        print("--------------------------- Random check ---------------------------")   
-        print("Random predictions status: ", Prediction.global_random_predictions)
-        print("Size:", len(Prediction.global_random_predictions))
+        number = number.data 
+        #Debugging 
+       # print("Random predictions status: ", Prediction.global_random_predictions)
+       # print("Size:", len(Prediction.global_random_predictions))
         
         prediction = Prediction.global_random_predictions[index]
         
@@ -134,11 +131,11 @@ class Prediction:
         
        
         rospy.loginfo("Actual number is {}, predicted number is {}.\n Prediction was {}".format(number, prediction, result))  
+        #Debugging
         if(self.false_predicted_counter>0):
+            #It works most of the time
             msg = str(self.false_predicted_counter) + " times the prediction did not work"
             rospy.loginfo(msg)
-        
-        print("---------------------------------------------------------------------")
         
         
     ### Start subscribers
