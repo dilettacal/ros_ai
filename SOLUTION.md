@@ -2,6 +2,8 @@
 
 Exercise ROS + Supervised Learning ist ein Pflichtbeleg im Kurs "K.I. in der Robotik" im  B. Sc. Angewandte Informatik an der Hochschule für Technik und Wirtschaft Berlin. 
 
+Repo: https://github.com/dltcls/ros_ai
+
 ## Supervised Learning und Publisher/Subscriber in ROS
 
 Als Modell wird ein CNN (Convolutional Neural Network) auf dem MNIST Datensatz trainiert. 
