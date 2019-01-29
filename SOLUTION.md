@@ -103,7 +103,7 @@ Der Graph mit nur den Knoten sieht so aus:
 
 
 
-![OnlyNodes](/home/ros18/KI/ros_robotics/rosgraph_onlyNodes.svg)
+![OnlyNodes](rosgraph_onlyNodes.svg)
 
 
 
